@@ -1,27 +1,41 @@
-# Zephyr LoRaWAN Sensor (QEMU Stub)
+Zephyr LoRaWAN Sensör
 
-This project is a QEMU-based, RF-less LoRaWAN sensor application skeleton
-developed using Zephyr RTOS.
+Bu proje, Zephyr RTOS kullanılarak geliştirilen, QEMU tabanlı ve RF donanımı içermeyen bir LoRaWAN sensör uygulaması iskeletidir.
 
-## Project Scope
-- Target: LoRaWAN Class A sensor node
-- Region: EU868
-- LoRaWAN Version: 1.0.3
-- Environment: QEMU (no RF hardware)
+Proje Kapsamı
 
-## Implemented Features
-- LoRaWAN configuration abstraction
-- Periodic sensor data generation (temperature & humidity - mock)
-- Payload formatting
-- HMAC-SHA256 payload signing
-- RF-less send stub for testing
+Hedef: LoRaWAN Class A sensör düğümü
 
-## Payload Format
-T:<temperature>,H:<humidity>#<HMAC_SHA256>
+Bölge: EU868
 
-## Build & Run
-west build -b qemu_x86 app_lorawan_stub -p always
-west build -t run
+LoRaWAN Versiyonu: 1.0.3
 
-## Notes
-This project does not perform real RF transmission.
+Ortam: QEMU (RF donanımı yok)
+
+Gerçekleştirilen Özellikler
+
+LoRaWAN yapılandırma soyutlaması
+
+Periyodik sensör verisi üretimi (sıcaklık ve nem – mock)
+
+Payload formatlama
+
+HMAC-SHA256 ile payload imzalama
+
+Test amaçlı RF-less gönderim simülasyonu (send stub)
+
+Payload Formatı
+
+T:<sıcaklık>,H:<nem>#<HMAC_SHA256>
+
+Derleme ve Çalıştırma
+
+Proje, Zephyr’in west tabanlı derleme sistemi kullanılarak QEMU hedefi için derlenir
+
+Uygulama QEMU ortamında çalıştırılır
+
+Notlar
+
+Bu proje gerçek RF iletim yapmaz
+
+LoRaWAN uygulama katmanının donanımdan bağımsız olarak geliştirilmesi ve test edilmesi amaçlanmıştır

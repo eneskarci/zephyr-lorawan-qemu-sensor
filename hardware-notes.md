@@ -1,0 +1,15 @@
+Donanım Tarafında Karşılaşılan Problemler (RAK3172)
+
+Bu proje kapsamında başlangıçta uygulamanın RAK3172 (STM32WL) kartı üzerinde çalıştırılması hedeflenmiştir. Programlama ve debug işlemleri için ST-LINK ve STM32CubeProgrammer kullanılmıştır. Ancak geliştirme sürecinde donanım tarafında erişim ve kararlılık açısından çeşitli problemlerle karşılaşılmıştır.
+
+STM32CubeProgrammer üzerinden karta bağlanma sırasında sık sık DEV_CONNECT_ERR hatası alınmıştır. Bağlantı çoğu zaman kararsız olmuş, bazı denemelerde ise tamamen kopmuştur. Varsayılan SWD frekans değerleri ile bağlantı kurulamazken, frekans düşürüldüğünde ve Hot Plug modu kullanıldığında bağlantı zaman zaman sağlanabilmiştir. Buna rağmen bu bağlantı stabil bir yapı sunmamıştır.
+
+Flash bellek üzerinde yapılan Full Chip Erase denemelerinde “Mass erase operation failed – verify flash protection” hatası alınmıştır. Bu durumun, kart üzerinde aktif olan flash koruma mekanizmalarından (RDP, WRP, PCROP) kaynaklandığı değerlendirilmiştir. Bu nedenle Option Bytes ayarları üzerinden korumaların kaldırılması hedeflenmiştir.
+
+Option Bytes ayarları STM32CubeProgrammer GUI üzerinden değiştirilmeye çalışıldığında, programın bazı durumlarda donduğu veya çöktüğü gözlemlenmiştir. RDP seviyesinin Level 1’den AA (Level 0) seviyesine çekilmesi denemelerinde, işlem tamamlanmış gibi görünmesine rağmen reset sonrası ayarların eski haline döndüğü tespit edilmiştir. CLI üzerinden yapılan denemelerde ise işlemler %100 tamamlanmış görünmesine rağmen USB bağlantısının koptuğu ve tekrar bağlanıldığında Option Bytes değerlerinin değişmediği görülmüştür.
+
+Cihaza erişimi kurtarmak amacıyla Under Reset modu denenmiş, ancak bu modda DEV_TARGET_CMD_ERR hatası alınmıştır. Bunun, kart üzerindeki NRST hattının ST-LINK tarafından beklenen şekilde kontrol edilememesinden kaynaklanabileceği değerlendirilmiştir. Bazı denemeler sonrasında MCU’nun reset döngüsüne girdiği ve debug bağlantısının tamamen kilitlendiği durumlar da yaşanmıştır.
+
+Yapılan ek denemelerde Under Reset ile birlikte hardware reset yaklaşımı kullanılarak cihaza yeniden erişim sağlanabilmiştir. Bu yöntemle Full Chip Erase işlemi başarıyla gerçekleştirilmiş ve flash korumaları temizlenmiştir. Bu aşamadan sonra karta sınırlı bir erişim sağlanabilmiş, Zephyr tabanlı hello world uygulaması cihaza yüklenerek çalıştırılabilmiştir. Ancak ilerleyen denemelerde tekrar ST-LINK DEV_CONNECT_ERR hatasıyla karşılaşılmış, karta bağlantı yeniden kararsız hale gelmiş ve bağlantı sağlanması çoğu zaman şansa bağlı olmuştur.
+
+Sonuç olarak, belirli adımlarla karta geçici olarak erişim sağlanabilmiş ve uygulama çalıştırılabilmiş olsa da, STM32CubeProgrammer ve ST-LINK kombinasyonunun bu kart üzerinde kararlı bir geliştirme ortamı sunmadığı görülmüştür. Bu nedenle proje geliştirme süreci, donanımdan bağımsız ve daha stabil olduğu için QEMU ortamı üzerinden devam ettirilmiş; donanım tarafında ise ilerleyen aşamalarda OpenOCD tabanlı daha kontrollü bir programlama ve debug sürecine geçilmesinin daha uygun olacağı değerlendirilmiştir.

@@ -1,0 +1,5 @@
+build/
+.vscode/
+*.log
+Thumbs.db
+.DS_Store

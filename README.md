@@ -13,7 +13,7 @@ Bu proje, Zephyr RTOS kullanılarak geliştirilmiş, QEMU tabanlı ve RF donanı
 - Periyodik sensör verisi üretimi (sıcaklık ve nem – mock)
 - Payload formatlama
 - HMAC-SHA256 ile payload imzalama
-- Test amaçlı RF-less gönderim simülasyon
+- Test amaçlı RF-less gönderim simülasyonu
 
 ## Payload Formatı
 - T:<sıcaklık>,H:<nem>#<HMAC_SHA256>
